@@ -1,0 +1,7 @@
+{
+  "rootDir": "src",
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "tests", "dist", "**/*spec.ts",
+    "src/infrastructure/postgres-adapter/ormconfig.ts"
+  ]
+}

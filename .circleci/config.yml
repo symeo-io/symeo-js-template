@@ -1,26 +1,109 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/configuration-reference/#jobs
+orbs:
+  aws-cli: circleci/aws-cli@3.1
+  slack: circleci/slack@4.10.1
+
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
+  install:
+    working_directory: ~/symeo-js-template
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
+      - image: cimg/node:18.12.1
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+    - run:
+        name: Install dependencies
+        command: yarn install
+    - checkout # Checking out code in case of a yarn values-version mismatch modifies the yarn.lock
+    - save_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+        paths:
+        - node_modules
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
+  test:
+    working_directory: ~/symeo-js-template
+    machine: true
+    environment:
+      NODE_OPTIONS: --max_old_space_size=4096
     steps:
       - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Change NodeJS values-version
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v18.12.1
+            nvm alias default v18.12.1
+      - run:
+          name: Install Yarn
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            npm i -g yarn
+      - run:
+          name: Test
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            yarn test
+      - store_artifacts:
+          path: ~/symeo-js-template/coverage
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  lint:
+    working_directory: ~/symeo-js-template
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+    - run:
+        name: Lint
+        command: yarn lint
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
+  build:
+    working_directory: ~/symeo-js-template
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+    - run:
+        name: Build
+        command: yarn build
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  ci:
     jobs:
-      - say-hello
+      - install:
+          context:
+            - slack-notifications
+      - test:
+          requires:
+            - install
+          context:
+            - slack-notifications
+      - lint:
+          requires:
+            - install
+          context:
+            - slack-notifications
+      - build:
+          requires:
+            - install
+          context:
+            - slack-notifications
