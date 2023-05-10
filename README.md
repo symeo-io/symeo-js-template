@@ -17,6 +17,7 @@
   - [Entrypoint and Dependency Injection](#entrypoint-and-dependency-injection)
   - [Configuration](#configuration)
   - [Endpoints and Services](#endpoints-and-services)
+  - [Error Handling](#error-handling)
 - [Testing strategy](#testing-strategy)
   - [Commands](#commands)
   - [Test Structure](#test-structure)
@@ -282,6 +283,9 @@ As examples in this project, 3 endpoints can be accessed:
 
 > See the section about swagger [here](#swagger) to have a better understanding of those endpoints and the data required.
 
+This template has only **one service** called `user.service.ts` which contain two methods. The first one to retrieve a user by its id and the
+other to create one.
+
 ### Error Handling
 
 You can define your own exceptions (SymeoException in this example).
@@ -308,7 +312,7 @@ To throw a new custom exception:
 1. You define the error message and the ExceptionCode you want to use (the only one in this example is `USER_NOT_FOUND` in `src/domain/exception/symeo.exception.code.enum.ts`).
 2. You map your exception code to a status code in `src/application/common/symeo.exception.code.to.http.status.map.ts`.
 
-> :white_check_mark: That way, your **domain has no idea of the technical implementation** of your error handling strategy. Therefore, you respect the clean architecture principles.
+> That way, your **domain has no idea of the technical implementation** of your error handling strategy. Therefore, you respect the clean architecture principles :thumbsup:
 
 ## :white_check_mark: Testing strategy
 
@@ -327,16 +331,16 @@ Interface mocking are made thanks to the [ts-mockito](https://www.npmjs.com/pack
 
 #### Unit Tests
 
-You will find an example of unit tests in `/tests/unit/domain/service` used to test behavior of the example service `user.service.ts`.
+You will find an example of unit tests in `/tests/unit/domain/service` used to test the behavior of the example service `user.service.ts`.
 
 In those tests, we do not reach external dependencies. Therefore, we must mock things like database access, external api access, etc...   
 
 #### Integration Tests
 
-Those tests are located to `/tests/integration` and are here to test the global behavior of our API. We must fake a start of our application and this is done
+Those tests are located in `/tests/integration` and are here to test the global behavior of our API. We must fake a start of our application and this is done
 by the `app.client.ts` file located in `/tests/utils/`.
 
-The folder `/tests/utils` is also the place where we will put code that allows us to fake the presence of entities in database, external APIs, etc...
+The folder `/tests/utils` is also there to write code that allows us to fake the presence of entities in database, external APIs, etc...
 
 ## :vertical_traffic_light: Continuous Integration
 
