@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from '../config/configuration';
 import { UserController } from '../application/controller/user.controller';
 import * as process from 'process';
+import { HelloWorldController } from '../application/controller/hello-world.controller';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import * as process from 'process';
     }),
     DomainModule,
   ],
-  controllers: [UserController],
+  controllers: [UserController, HelloWorldController],
 })
 export class ApplicationModule {}
