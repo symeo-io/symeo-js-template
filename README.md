@@ -26,16 +26,12 @@
 
 ### Minimum requirements
 
-List of requirement with **exact** versions and install documentation link. Example:
-
-- [NodeJS](https://nodejs.org/en/) 12.15.0 (You can use [nvm](https://github.com/nvm-sh/nvm))
+- [NodeJS](https://nodejs.org/en/) 16.15.0 (You can use [nvm](https://github.com/nvm-sh/nvm))
 - [Yarn](https://classic.yarnpkg.com/en/docs/install) 1.22.0
-- [Docker](https://docs.docker.com/install/) 19.03.8
-- [Docker Compose](https://docs.docker.com/compose/install/) 1.25.4
+- [Docker](https://docs.docker.com/install/) 20.10.23
+- [Docker Compose](https://docs.docker.com/compose/install/) 2.15.1
 
 ### Install the application locally
-
-List of command to run to have to project running locally. Example:
 
 - Run `git clone git@github.com:your-organisation/symeo-js-template.git` or `git clone https://github.com/your-organisation/symeo-js-template.git` to clone the repository
 - Run `cd symeo-js-template` to navigate to the code folder
