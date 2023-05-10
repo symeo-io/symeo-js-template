@@ -1,6 +1,4 @@
-# Your Awesome Project name
-
-A quick but kickass description of the purpose of this repository
+# symeo-js-template
 
 ## Table of Contents
 
