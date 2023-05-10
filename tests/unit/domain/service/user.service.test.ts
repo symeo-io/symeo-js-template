@@ -20,7 +20,7 @@ describe('UserService', () => {
   });
 
   describe('findById', () => {
-    it('should throw a new 404 HttpException', async () => {
+    it('should throw a USER_NOT_FOUND exception', async () => {
       // Given
       const userId = uuid();
 
