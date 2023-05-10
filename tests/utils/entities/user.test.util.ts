@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import UserEntity from '../../../src/infrastructure/postgres-adapter/entity/user.entity';
-import { AppClient } from '../app.client';
+import { AppClient } from '../../integration/app.client';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { faker } from '@faker-js/faker';
 

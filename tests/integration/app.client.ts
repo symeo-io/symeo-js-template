@@ -1,4 +1,4 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   PostgreSqlContainer,
@@ -7,6 +7,7 @@ import {
 import * as request from 'supertest';
 import supertest from 'supertest';
 import * as process from 'process';
+import { SymeoExceptionHttpFilter } from '../../src/application/common/symeo.exception.http.filter';
 
 export class AppClient {
   public app: INestApplication;
@@ -34,6 +35,7 @@ export class AppClient {
     }).compile();
 
     this.app = this.module.createNestApplication();
+    this.app.useGlobalFilters(new SymeoExceptionHttpFilter(new Logger()));
     this.app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await this.app.init();
   }

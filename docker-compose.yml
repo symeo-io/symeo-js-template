@@ -5,16 +5,9 @@ services:
     platform: linux/amd64
     image: "postgres:13"
     container_name: "template-database"
-    hostname: postgres_exposition_host
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=P@ssw0rd
       - POSTGRES_DB=symeo-js-template
     ports:
       - "5432:5432"
-    networks:
-      - symeo-js-template-network
-
-networks:
-  symeo-js-template-network:
-    driver: bridge

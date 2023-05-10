@@ -1,4 +1,4 @@
-import { AppClient } from '../../../utils/app.client';
+import { AppClient } from '../../app.client';
 import { v4 as uuid } from 'uuid';
 import { UserTestUtil } from '../../../utils/entities/user.test.util';
 

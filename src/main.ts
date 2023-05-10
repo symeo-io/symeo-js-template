@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ApplicationModule } from 'src/bootstrap/application.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { SymeoExceptionHttpFilter } from './application/common/symeo.exception.http.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
@@ -11,6 +12,7 @@ async function bootstrap() {
     credentials: true,
     origin: configService.get<string>('cors.origin'),
   });
+  app.useGlobalFilters(new SymeoExceptionHttpFilter(new Logger()));
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

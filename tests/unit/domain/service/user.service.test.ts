@@ -5,6 +5,8 @@ import { v4 as uuid } from 'uuid';
 import { HttpException } from '@nestjs/common';
 import { User } from '../../../../src/domain/model/user.model';
 import { faker } from '@faker-js/faker';
+import { SymeoException } from '../../../../src/domain/exception/symeo.exception';
+import { SymeoExceptionCode } from '../../../../src/domain/exception/symeo.exception.code.enum';
 
 describe('UserService', () => {
   let mockedUserStoragePort: UserStoragePort;
@@ -36,7 +38,12 @@ describe('UserService', () => {
 
       // Then
       expect(exception).not.toBeNull();
-      expect(exception?.getStatus()).toEqual(404);
+      expect(exception).toEqual(
+        new SymeoException(
+          `User with id ${userId} not found`,
+          SymeoExceptionCode.USER_NOT_FOUND,
+        ),
+      );
     });
 
     it('should get a user', async () => {

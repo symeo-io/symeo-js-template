@@ -1,6 +1,6 @@
 # symeo-js-template
 
-## Table of Contents
+## :clipboard: Table of Contents
 
 - [Installation](#installation)
     - [Minimum requirements](#minimum-requirements)
@@ -22,7 +22,7 @@
   - [Test Structure](#test-structure)
 - [Continuous Integration](#continuous-integration)
 
-## Installation
+## :construction: Installation
 
 ### Minimum requirements
 
@@ -41,7 +41,7 @@
 - Edit the created `.env.development` file with the relevant variable values
 - Run `yarn start:dev` to start the application on the 9999 port
 
-## Development
+## :wrench: Development
 
 ### Coding conventions
 
@@ -89,7 +89,7 @@ id: string;
 username: string;
 ```
 
-## Architectures
+## :office: Architectures
 
 ### Structure
 
@@ -233,7 +233,7 @@ Users : integer age
 ```
 
 
-## Infrastructure
+## :rocket: Infrastructure
 
 ### Entrypoint and Dependency Injection
 
@@ -282,7 +282,35 @@ As examples in this project, 3 endpoints can be accessed:
 
 > See the section about swagger [here](#swagger) to have a better understanding of those endpoints and the data required.
 
-## Testing strategy
+### Error Handling
+
+You can define your own exceptions (SymeoException in this example).
+
+```typescript
+// src/domain/exception/symeo.exception.ts
+
+export class SymeoException {
+  errorMessage: string;
+  symeoExceptionCode: SymeoExceptionCode;
+
+  constructor(
+    errorMessage: string | Record<string, any>,
+    symeoExceptionCode: SymeoExceptionCode,
+  ) {
+    this.symeoExceptionCode = symeoExceptionCode;
+    this.errorMessage = errorMessage as string;
+  }
+}
+```
+
+To throw a new custom exception:
+
+1. You define the error message and the ExceptionCode you want to use (the only one in this example is `USER_NOT_FOUND` in `src/domain/exception/symeo.exception.code.enum.ts`).
+2. You map your exception code to a status code in `src/application/common/symeo.exception.code.to.http.status.map.ts`.
+
+> :white_check_mark: That way, your **domain has no idea of the technical implementation** of your error handling strategy. Therefore, you respect the clean architecture principles.
+
+## :white_check_mark: Testing strategy
 
 The tests are carried out using the [jest](https://jestjs.io/) library.
 
@@ -310,7 +338,7 @@ by the `app.client.ts` file located in `/tests/utils/`.
 
 The folder `/tests/utils` is also the place where we will put code that allows us to fake the presence of entities in database, external APIs, etc...
 
-## Continuous Integration
+## :vertical_traffic_light: Continuous Integration
 
 A configuration for [circleci](https://circleci.com/) is already present in this project at `.circleci/config.yml`.
 
