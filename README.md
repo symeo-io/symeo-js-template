@@ -96,25 +96,32 @@ username: string;
 
 The source code is contained in the `/src` directory:
 
-```shell
+```text
 src
 ├── application
-│   ├── controller
-│   │   └── user.controller.ts
-│   ├── decorator
-│   └── dto
-│       └── user
-│           ├── create-user.dto.ts
-│           ├── create-user.response.dto.ts
-│           ├── get-user.response.dto.ts
-│           └── user.dto.ts
+│   └── rest-api-adapter
+│       ├── common
+│       │   ├── symeo.exception.code.to.http.status.map.ts
+│       │   └── symeo.exception.http.filter.ts
+│       ├── controller
+│       │   └── user.controller.ts
+│       ├── decorator
+│       └── dto
+│           └── user
+│               ├── create-user.dto.ts
+│               ├── create-user.response.dto.ts
+│               ├── get-user.response.dto.ts
+│               └── user.dto.ts
 ├── bootstrap
-│   ├── application.module.ts
+│   ├── app.module.ts
+│   ├── configuration.ts
 │   ├── domain.module.ts
-│   └── postgres.adapter.module.ts
-├── config
-│   └── configuration.ts
+│   ├── postgres.adapter.module.ts
+│   └── rest-api-adapter.module.ts
 ├── domain
+│   ├── exception
+│   │   ├── symeo.exception.code.enum.ts
+│   │   └── symeo.exception.ts
 │   ├── model
 │   │   └── user.model.ts
 │   ├── port
@@ -242,10 +249,10 @@ NestJS works with modules (see [here](https://docs.nestjs.com/modules)), consequ
 
 ```typescript
 // src/main.ts
-const app = await NestFactory.create(ApplicationModule);
+const app = await NestFactory.create(AppModule);
 ```
 
-Your `/src/bootstrap` folder will have the same structure as your application. One module for the application folder, one for the domain and one for each adapter you'll need to plug.
+Your `/src/bootstrap` folder will have the same structure as your application. One module for the domain and one for each adapter you'll need to plug.
 
 In NestJS, you'll do your dependency injections as follows:
 

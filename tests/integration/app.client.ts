@@ -26,12 +26,10 @@ export class AppClient {
     process.env.DATABASE_TYPEORM_HOST = this.container.getHost();
     process.env.DATABASE_TYPEORM_PORT = this.container.getPort().toString();
 
-    const { ApplicationModule } = await import(
-      'src/bootstrap/application.module'
-    );
+    const { AppModule } = await import('src/bootstrap/app.module');
 
     this.module = await Test.createTestingModule({
-      imports: [ApplicationModule],
+      imports: [AppModule],
     }).compile();
 
     this.app = this.module.createNestApplication();

@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { ApplicationModule } from 'src/bootstrap/application.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { SymeoExceptionHttpFilter } from './application/rest-api-adapter/common/symeo.exception.http.filter';
+import { AppModule } from './bootstrap/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApplicationModule);
+  const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   app.enableCors({
     credentials: true,
