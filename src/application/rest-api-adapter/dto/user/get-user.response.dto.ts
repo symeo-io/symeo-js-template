@@ -1,13 +1,13 @@
-import { UserDTO } from './user.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../../domain/model/user.model';
+import { UserDTO } from './user.dto';
+import { User } from '../../../../domain/model/user.model';
 
-export class CreateUserResponseDTO {
+export class GetUserResponseDTO {
   @ApiProperty({ type: UserDTO })
   user: UserDTO;
 
   static fromDomain(user: User) {
-    const dto = new CreateUserResponseDTO();
+    const dto = new GetUserResponseDTO();
     dto.user = UserDTO.fromDomain(user);
     return dto;
   }

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import UserFacade from '../../domain/port/in/user.facade';
+import UserFacade from '../../../domain/port/in/user.facade';
 import { GetUserResponseDTO } from '../dto/user/get-user.response.dto';
 import { CreateUserDTO } from '../dto/user/create-user.dto';
 import { CreateUserResponseDTO } from '../dto/user/create-user.response.dto';

@@ -7,7 +7,7 @@ import {
 import * as request from 'supertest';
 import supertest from 'supertest';
 import * as process from 'process';
-import { SymeoExceptionHttpFilter } from '../../src/application/common/symeo.exception.http.filter';
+import { SymeoExceptionHttpFilter } from '../../src/application/rest-api-adapter/common/symeo.exception.http.filter';
 
 export class AppClient {
   public app: INestApplication;

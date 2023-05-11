@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { DomainModule } from './domain.module';
 import { ConfigModule } from '@nestjs/config';
-import configuration from '../config/configuration';
-import { UserController } from '../application/controller/user.controller';
+import configuration from './configuration';
+import { UserController } from '../application/rest-api-adapter/controller/user.controller';
 import * as process from 'process';
-import { HelloWorldController } from '../application/controller/hello-world.controller';
 
 @Module({
   imports: [
@@ -15,6 +14,6 @@ import { HelloWorldController } from '../application/controller/hello-world.cont
     }),
     DomainModule,
   ],
-  controllers: [UserController, HelloWorldController],
+  controllers: [UserController],
 })
 export class ApplicationModule {}

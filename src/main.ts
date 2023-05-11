@@ -3,7 +3,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ApplicationModule } from 'src/bootstrap/application.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { SymeoExceptionHttpFilter } from './application/common/symeo.exception.http.filter';
+import { SymeoExceptionHttpFilter } from './application/rest-api-adapter/common/symeo.exception.http.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);

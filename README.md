@@ -100,7 +100,6 @@ The source code is contained in the `/src` directory:
 src
 ├── application
 │   ├── controller
-│   │   ├── hello-world.controller.ts
 │   │   └── user.controller.ts
 │   ├── decorator
 │   └── dto
@@ -275,9 +274,8 @@ In this project, we use `.env.*` files to manage configuration variables and sec
 
 ### Endpoints and Services
 
-As examples in this project, 3 endpoints can be accessed:
+As examples in this project, 2 endpoints can be accessed:
 
-- `(GET) /hello-world` : display a simple "Hello World" message.
 - `(GET) /users/:id` : get a user by its id.
 - `(POST) /users` : create a user.
 
