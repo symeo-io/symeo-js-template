@@ -1,0 +1,108 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@4.10.1
+
+jobs:
+  install:
+    working_directory: ~/symeo-js-template
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+    - run:
+        name: Install dependencies
+        command: yarn install
+    - checkout # Checking out code in case of a yarn values-version mismatch modifies the yarn.lock
+    - save_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+        paths:
+        - node_modules
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
+  test:
+    working_directory: ~/symeo-js-template
+    machine: true
+    environment:
+      NODE_OPTIONS: --max_old_space_size=4096
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+      - run:
+          name: Change NodeJS values-version
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v18.12.1
+            nvm alias default v18.12.1
+      - run:
+          name: Install Yarn
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            npm i -g yarn
+      - run:
+          name: Test
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            yarn test
+      - store_artifacts:
+          path: ~/symeo-js-template/coverage
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  lint:
+    working_directory: ~/symeo-js-template
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+    - run:
+        name: Lint
+        command: yarn lint
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
+  build:
+    working_directory: ~/symeo-js-template
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+    - checkout
+    - restore_cache:
+        key: dependency-cache-{{ checksum "~/symeo-js-template/yarn.lock" }}
+    - run:
+        name: Build
+        command: yarn build
+    - slack/notify:
+        event: fail
+        template: basic_fail_1
+
+workflows:
+  ci:
+    jobs:
+      - install:
+          context:
+            - slack-notifications
+      - test:
+          requires:
+            - install
+          context:
+            - slack-notifications
+      - lint:
+          requires:
+            - install
+          context:
+            - slack-notifications
+      - build:
+          requires:
+            - install
+          context:
+            - slack-notifications
